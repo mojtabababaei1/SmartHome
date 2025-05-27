@@ -1,0 +1,50 @@
+<resources>
+    <!-- Common -->
+    <string name="error_unknown">خطای نامشخص رخ داد</string>
+    <string name="error_network">خطا در اتصال به شبکه</string>
+
+    <!-- Main Screen -->
+    <string name="title_devices">دستگاه‌های هوشمند</string>
+    <string name="washing_machine">ماشین لباسشویی هوشمند</string>
+    <string name="refrigerator">یخچال هوشمند</string>
+
+    <!-- WiFi Configuration -->
+    <string name="wifi_config">تنظیمات وای‌فای</string>
+    <string name="wifi_ssid">نام شبکه</string>
+    <string name="wifi_password">رمز عبور</string>
+    <string name="configure_wifi">تایید مشخصات وای‌فای</string>
+
+    <!-- Washing Machine -->
+    <string name="power">روشن/خاموش</string>
+    <string name="start_stop">شروع/توقف</string>
+    <string name="temperature">دما</string>
+    <string name="speed">سرعت</string>
+    <string name="mode">حالت</string>
+
+    <!-- Refrigerator -->
+    <string name="zone">محیط</string>
+    <string name="lock">قفل</string>
+    <string name="function">عملکرد</string>
+    <string name="fridge_temp">دمای یخچال</string>
+    <string name="freezer_temp">دمای فریزر</string>
+    <string name="fridge_door">در یخچال</string>
+    <string name="freezer_door">در فریزر</string>
+
+
+    <string name="quick_freeze">فریز سریع</string>
+    <string name="eco_mode">حالت اقتصادی</string>
+    <string name="vacation_mode">حالت مسافرت</string>
+    <string name="child_lock">قفل کودک</string>
+    <string name="door_status">وضعیت درب</string>
+    <string name="target_temp">دمای هدف</string>
+    <string name="fridge">یخچال</string>
+    <string name="freezer">فریزر</string>
+    <string name="quick_actions">عملیات سریع</string>
+    <string name="voice_command">فرمان صوتی</string>
+    <string name="start_voice_command">شروع فرمان صوتی</string>
+    <string name="stop_voice_command">پایان فرمان صوتی</string>
+    <string name="error_occurred">خطا رخ داد</string>
+    <string name="refresh">بروزرسانی</string>
+    <string name="status_unknown">نامشخص</string>
+
+</resources>

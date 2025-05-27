@@ -1,0 +1,31 @@
+<!-- res/layout/dialog_pairing.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter the pairing code displayed on your TV:"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/edit_pairing_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pairing Code"
+        android:inputType="text"
+        android:maxLength="6"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/button_submit_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

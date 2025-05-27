@@ -1,0 +1,8 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "kotlin.languageServer.enabled": true,
+    "kotlin.languageServer.trace.server": "messages",
+    "kotlin.debugAdapter.enabled": true,
+    "kotlin.trace.server": "messages",
+    "kotlin.compiler.jvm.target": "17"
+}
