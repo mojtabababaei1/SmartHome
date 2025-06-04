@@ -2,18 +2,20 @@ package com.maadiran.myvision.presentation.features.fridge
 
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.maadiran.myvision.presentation.features.settings.SettingsScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.InetSocketAddress
@@ -29,15 +31,16 @@ fun FridgeNavGraph(navController: NavHostController) {
         val connected = withContext(Dispatchers.IO) {
             try {
                 val socket = Socket()
-                socket.connect(InetSocketAddress("refrigerator.local", 80), 2000)
+                socket.connect(InetSocketAddress("refrigmb.local", 80), 2000)
                 socket.close()
                 true
             } catch (e: Exception) {
                 false
             }
         }
-        startDestination = if (connected) "fridge" else "WifiForm"
+        startDestination = if (connected) "fridge" else "serverStatus"
     }
+    Spacer(Modifier.height(12.dp))
 
     if (startDestination != null) {
         NavHost(
@@ -48,13 +51,16 @@ fun FridgeNavGraph(navController: NavHostController) {
                 WifiForm(navController = fridgeNavController)
            }
             composable("fridge") {
-                FridgeScreen()
+                FridgeScreen(navController = fridgeNavController)
             }
             composable("status") {
                 Text("یخچال با موفقیت متصل شد!")
             }
             composable("settings") {
-                SettingsScreen()
+                SettingsScreen(navController = fridgeNavController)
+            }
+            composable("serverStatus") {
+                ServerStatusScreen(navController = fridgeNavController)
             }
         }
     } else {

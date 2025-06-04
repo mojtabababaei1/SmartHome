@@ -1,5 +1,3 @@
-import com.google.protobuf.gradle.proto
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -116,6 +114,16 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.protobuf.java)
+
+
+    implementation("androidx.datastore:datastore-preferences:1.1.0")
+
+
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+
 
     // Use direct implementation
     implementation("com.alphacephei:vosk-android:0.3.32+")

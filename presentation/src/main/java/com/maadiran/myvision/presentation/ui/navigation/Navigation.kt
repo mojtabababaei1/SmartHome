@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -23,14 +24,17 @@ import com.maadiran.myvision.presentation.features.devices.tv.ui.screens.voice.G
 import com.maadiran.myvision.presentation.features.devices.tv.viewmodels.MainViewModel
 import com.maadiran.myvision.presentation.features.devices.washingmachine.ui.screens.WashingMachineScreen
 import com.maadiran.myvision.presentation.features.fridge.FridgeNavGraph
+import com.maadiran.myvision.presentation.features.main.MainScreen
 import com.maadiran.myvision.presentation.features.main.SmartHubScreen
+import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun AppNavigation(
     navController: NavHostController,
     mainViewModel: MainViewModel,
-    voiceServiceManager: IVoiceServiceManager
+    voiceServiceManager: IVoiceServiceManager,
+
 ) {
     val isPaired by mainViewModel.isPaired.collectAsState()
     val connectionState by mainViewModel.connectionState.collectAsState()
@@ -40,18 +44,16 @@ fun AppNavigation(
     LaunchedEffect(Unit) {
         mainViewModel.initializeVoiceManager(context)
     }
+    val themeViewModel: ThemeViewModel = hiltViewModel()
 
-    NavHost(
-        navController = navController,
-        startDestination = "main"
-    ) {
+    NavHost(navController, startDestination = "main") {
         composable("main") {
-            SmartHubScreen(
+            MainScreen(
                 navController = navController,
-                mainViewModel = mainViewModel
+                onTVClick = { /* ... */ },
+                themeViewModel = themeViewModel // ✅ این خط باید اضافه بشه
             )
         }
-
         // مسیر مخصوص یخچال با ناوبری داخلی خودش
         composable("fridgeModule") {
             FridgeNavGraph(navController = navController)

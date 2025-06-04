@@ -4,16 +4,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.maadiran.myvision.presentation.features.devices.tv.viewmodels.MainViewModel
+import com.maadiran.myvision.presentation.features.settings.MyVisionSettingsScreen
 import com.maadiran.myvision.presentation.ui.navigation.SmartHubNavigationBar
+import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 
 @Composable
 fun SmartHubScreen(
     navController: NavController,
-    mainViewModel: MainViewModel,  // Add mainViewModel parameter
-    modifier: Modifier = Modifier
+    mainViewModel: MainViewModel,
+    modifier: Modifier = Modifier,
 ) {
+    val themeViewModel: ThemeViewModel = hiltViewModel() // اضافه کن
+
     var currentSection by remember { mutableStateOf("home") }
     val isPaired by mainViewModel.isPaired.collectAsState()
 
@@ -29,6 +34,7 @@ fun SmartHubScreen(
                 onSettingsClick = {
                     currentSection = "settings"
                 }
+
             )
         }
     ) { paddingValues ->
@@ -43,20 +49,27 @@ fun SmartHubScreen(
                             navController.navigate("tv-pairing")
                         }
                     },
-                    modifier = modifier
+                    modifier = modifier,
+                    themeViewModel = themeViewModel // این رو اضافه کن
                 )
                 "devices" -> DevicesScreen(
                     navController = navController,
                     modifier = modifier
                 )
-                "settings" -> SettingsScreen(
+//                "settings" -> SettingsScreen(
+//                    navController = navController,
+//                    modifier = modifier
+//                )
+                "settings" -> MyVisionSettingsScreen(
                     navController = navController,
-                    modifier = modifier
+                    themeViewModel = themeViewModel // اطمینان حاصل کن این پارامتر اضافه شده
                 )
+
             }
         }
     }
 }
+
 @Composable
 fun DevicesScreen(
     navController: NavController,
@@ -72,17 +85,17 @@ fun DevicesScreen(
     }
 }
 
-@Composable
-fun SettingsScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier
-) {
-    // Implement your settings screen here
-    Column(modifier = modifier.fillMaxSize()) {
-        Text(
-            text = "Settings",
-            style = MaterialTheme.typography.headlineLarge
-        )
-        // Add your settings options here
-    }
-}
+//@Composable
+//fun SettingsScreen(
+//    navController: NavController,
+//    modifier: Modifier = Modifier
+//) {
+//    // Implement your settings screen here
+//    Column(modifier = modifier.fillMaxSize()) {
+//        Text(
+//            text = "Settings",
+//            style = MaterialTheme.typography.headlineLarge
+//        )
+//        // Add your settings options here
+//    }
+//}

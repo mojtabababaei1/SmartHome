@@ -133,6 +133,14 @@ fun WifiForm(navController: NavController) {
                     color = Color.White,
                     style = MaterialTheme.typography.labelLarge
                 )
+
+            }
+            Spacer(Modifier.height(24.dp))
+            Button(
+                onClick = { navController.navigate("serverStatus") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("دریافت از سرور")
             }
 
 

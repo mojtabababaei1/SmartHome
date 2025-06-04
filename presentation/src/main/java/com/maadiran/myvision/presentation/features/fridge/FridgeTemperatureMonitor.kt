@@ -31,7 +31,7 @@ fun FridgeTemperatureMonitor() {
         while (true) {
             try {
                 withContext(Dispatchers.IO) {
-                    val tempsJson = URL("http://refrigerator.local/api/MonitorTemps")
+                    val tempsJson = URL("http://refrigmb.local/api/MonitorTemps")
                         .openConnection().run {
                             connectTimeout = 3000
                             readTimeout = 3000

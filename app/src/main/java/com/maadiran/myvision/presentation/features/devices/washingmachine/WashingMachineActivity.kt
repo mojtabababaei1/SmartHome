@@ -39,16 +39,16 @@ class WashingMachineActivity : BaseSpeechActivity() {
             Log.e(TAG, "No IP provided to WashingMachineActivity")
         }
 
-        setContent {
-            MyVisionTheme {
-                val navController = rememberNavController()
-
-                WashingMachineScreen(
-                    ip = ip,
-                    navController = navController,
-                    onSpeechButtonClick = { startSpeechRecognition() }
-                )
-            }
-        }
+//        setContent {
+//            MyVisionTheme {
+//                val navController = rememberNavController()
+//
+//                WashingMachineScreen(
+//                    ip = ip,
+//                    navController = navController,
+//                    onSpeechButtonClick = { startSpeechRecognition() }
+//                )
+//            }
+//        }
     }
 }

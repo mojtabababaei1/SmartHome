@@ -1,11 +1,13 @@
 package com.maadiran.myvision.presentation.features.fridge
 
+import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.maadiran.myvision.presentation.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,7 +45,9 @@ import java.net.URL
 
 
 @Composable
-fun FridgeScreen(modifier: Modifier = Modifier) {
+fun FridgeScreen(    navController: NavController,
+                     modifier: Modifier = Modifier
+) {
     var fridgeDoor by remember { mutableStateOf("unknown") }
     var freezeDoor by remember { mutableStateOf("unknown") }
     var fridgeTemp by remember { mutableStateOf("--") }
@@ -54,7 +59,7 @@ fun FridgeScreen(modifier: Modifier = Modifier) {
         while (true) {
             try {
                 withContext(Dispatchers.IO) {
-                    val doorsJson = URL("http://refrigerator.local/api/MonitorDoors")
+                    val doorsJson = URL("http://refrigmb.local/api/MonitorDoors")
                         .openConnection().run {
                             connectTimeout = 3000
                             readTimeout = 3000
@@ -63,7 +68,7 @@ fun FridgeScreen(modifier: Modifier = Modifier) {
                             inputStream.bufferedReader().readText()
                         }
 
-                    val tempsJson = URL("http://refrigerator.local/api/MonitorTemps")
+                    val tempsJson = URL("http://refrigmb.local/api/MonitorTemps")
                         .openConnection().run {
                             connectTimeout = 3000
                             readTimeout = 3000
@@ -72,7 +77,7 @@ fun FridgeScreen(modifier: Modifier = Modifier) {
                             inputStream.bufferedReader().readText()
                         }
 
-                    val fanJson = URL("http://refrigerator.local/api/MonitorFan")
+                    val fanJson = URL("http://refrigmb.local/api/MonitorFan")
                         .openConnection().run {
                             connectTimeout = 3000
                             readTimeout = 3000
@@ -109,8 +114,11 @@ fun FridgeScreen(modifier: Modifier = Modifier) {
 
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
+
+
         // تصویر پس‌زمینه
         Image(
             painter = painterResource(id = R.drawable.fridge_background),
@@ -130,7 +138,18 @@ fun FridgeScreen(modifier: Modifier = Modifier) {
                 .aspectRatio(1f) // نسبت تصویر (می‌تونی تغییر بدی)
                 .height(400.dp)  // ارتفاع تصویر
         )
-
+        Image(
+            painter = painterResource(id = R.drawable.ic_settings),
+            contentDescription = "Settings",
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+                .size(32.dp)
+                .clickable {
+                    navController.navigate("settings")
+                    Log.d("FridgeScreen", "Settings icon clicked")
+                }
+        )
         // آیکن فن (فقط اگر فن روشن است)
         if (fridgeFan.contains("on", ignoreCase = true)) {
             val infiniteTransition = rememberInfiniteTransition()

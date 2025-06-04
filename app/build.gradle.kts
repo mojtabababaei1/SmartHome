@@ -175,12 +175,19 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.compiler)
 
+    implementation ("androidx.compose.ui:ui:<compose_version>")
+    implementation ("androidx.compose.material3:material3:<compose_version>")
+    implementation ("androidx.compose.runtime:runtime-livedata:<compose_version>")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.4.3")
+
+
     // Add explicit JNA dependencies at app level
     implementation("net.java.dev.jna:jna:5.13.0") {
         exclude(group = "org.apache.directory.studio", module = "org.apache.commons.io")
     }
     // Remove or comment out jna-platform
     // implementation("net.java.dev.jna:jna-platform:5.13.0")
+
 
     // Update JNA dependency to explicitly include natives
     // implementation("net.java.dev.jna:jna:5.13.0@aar") {
@@ -191,8 +198,16 @@ dependencies {
     implementation("com.patrykandpatrick.vico:compose-m3:1.13.0")
     implementation("com.patrykandpatrick.vico:core:1.13.0")
 
+
+    implementation("androidx.compose.runtime:runtime:1.6.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+    implementation("androidx.compose.runtime:runtime-saveable:1.6.0")
+
     // (اختیاری) MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("com.google.dagger:hilt-android:2.48")
+    kapt ("com.google.dagger:hilt-android-compiler:2.48")
 }
 
 kapt {
