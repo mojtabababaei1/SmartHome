@@ -23,7 +23,7 @@ class IoTRepositoryTest {
 
     @BeforeEach
     fun setup() {
-        repository = IoTRepository(apiService, dynamicBaseUrlInterceptor, preferencesManager)
+       // repository = IoTRepository(apiService, dynamicBaseUrlInterceptor, preferencesManager)
         coEvery { preferencesManager.getIpAddress(any()) } returns testIpAddress
     }
 

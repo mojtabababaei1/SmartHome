@@ -34,9 +34,9 @@ class MainActivity : ComponentActivity() {
         permissionHandler = PermissionHandler(this)
         voiceServiceManager = VoiceServiceManager(this)
 
-        // اجازه‌ها
+
         permissionHandler.checkAndRequestPermissions {
-            // می‌توانی اینجا بعد از گرفتن اجازه، voice recognition را راه‌اندازی کنی
+
             initializeVoiceRecognition()
         }
 

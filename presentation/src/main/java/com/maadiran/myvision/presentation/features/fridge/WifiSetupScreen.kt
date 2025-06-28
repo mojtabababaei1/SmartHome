@@ -19,54 +19,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.maadiran.myvision.presentation.R
+import com.maadiran.myvision.presentation.features.main.MainScreenViewModel
+import com.maadiran.myvision.presentation.ui.getBackgroundImageRes
+import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 
-//@Composable
-//fun WifiSetupScreen(navController: NavController) {
-//    var showWifiForm by remember { mutableStateOf(false) }
-//
-//    Box(modifier = Modifier.fillMaxSize()) {
-//
-//        // ✅ تصویر پس‌زمینه
-//        Image(
-//            painter = painterResource(id = R.drawable.fridge_background), // نام فایل تصویری
-//            contentDescription = null,
-//            modifier = Modifier.fillMaxSize(),
-//            contentScale = ContentScale.Crop // برای پر کردن صفحه
-//        )
-//
-//
-//    if (!showWifiForm) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(24.dp),
-//            verticalArrangement = Arrangement.Center
-//        ) {
-//            Text("چه کاری می‌خواهید انجام دهید؟", style = MaterialTheme.typography.headlineSmall)
-//            Spacer(Modifier.height(24.dp))
-//            Button(
-//                onClick = { showWifiForm = true },
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Text("اتصال یخچال به وای‌فای")
-//            }
-//            Spacer(Modifier.height(12.dp))
-//            Button(
-//                onClick = { /* در آینده تکمیل خواهد شد */ },
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Text("گزینه دیگر (فعلاً غیرفعال)")
-//            }
-//        }
-//    } else {
-//        WifiForm(navController = navController)
-//    }
-//}
-//    }
 @Composable
-fun WifiForm(navController: NavController) {
+fun WifiForm(navController: NavController,
+             themeViewModel: ThemeViewModel,
+             viewModel: MainScreenViewModel = hiltViewModel()) {
     var ssid by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -75,13 +37,19 @@ fun WifiForm(navController: NavController) {
         modifier = Modifier.fillMaxSize()
     ) {
         // تصویر پس‌زمینه
-        Image(
-            painter = painterResource(id = R.drawable.fridge_background),
-            contentDescription = "Background",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
+        val currentTheme by themeViewModel.currentTheme.collectAsState()
+        val backgroundImageRes = getBackgroundImageRes(currentTheme)
 
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                painter = painterResource(id = backgroundImageRes),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop // تصویر کل صفحه رو بگیره
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()

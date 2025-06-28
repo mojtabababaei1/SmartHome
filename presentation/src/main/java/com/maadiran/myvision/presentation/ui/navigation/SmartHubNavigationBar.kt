@@ -1,141 +1,151 @@
 package com.maadiran.myvision.presentation.ui.navigation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.maadiran.myvision.presentation.R
 
 @Composable
 fun SmartHubNavigationBar(
-    containerColor: Color = Color.White, // Set the background color
-    tonalElevation: Dp = 4.dp, // Set the elevation
+    containerColor: Color = Color.White,
+    tonalElevation: Dp = 4.dp,
+    selectedItem: MutableState<Int>,
     onHomeClick: () -> Unit,
-    onDevicesClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onVoiceClick: () -> Unit,
+    onShoppingClick: () -> Unit,
+    onTroubleshootingClick: () -> Unit,
+    onProfileClick: () -> Unit
 ) {
-    val gradientBrush = Brush.horizontalGradient(
-        colors = listOf(Color(0xFF00eff4), Color(0xFF02a2ff))
-    )
+    val iconSize = 45.dp
+    val itemBackgroundColor = { index: Int ->
+        if (selectedItem.value == index) Color(0x220000FF) else Color.Transparent
+    }
 
-    val selectedItem = remember { mutableStateOf(1) } // Default to Home
-
-    Box(
+    NavigationBar(
+        containerColor = containerColor,
+        tonalElevation = tonalElevation,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .background(
-                color = containerColor,
-                shape = RoundedCornerShape(24.dp)
-            )
+            .height(80.dp)
     ) {
-        NavigationBar(
-            containerColor = Color.Transparent,
-            tonalElevation = tonalElevation,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-        ) {
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Devices",
-                        tint = if (selectedItem.value == 0) Color.White else Color.Gray
-                    )
-                },
-                label = {
-                    Text(
-                        text = "Devices",
-                        fontSize = 12.sp,
-                        color = if (selectedItem.value == 0) Color.White else Color.Gray
-                    )
-                },
-                selected = selectedItem.value == 0,
-                onClick = {
-                    selectedItem.value = 0
-                    onDevicesClick()
-                },
-                alwaysShowLabel = true,
-                modifier = if (selectedItem.value == 0) Modifier
-                    .background(brush = gradientBrush, shape = RoundedCornerShape(50))
-                    .padding(8.dp) else Modifier
+        NavigationBarItem(
+            icon = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_home),
+                    contentDescription = "Home",
+                    modifier = Modifier
+                        .size(iconSize)
+                        .background(itemBackgroundColor(0), CircleShape)
+                        .padding(6.dp)
+                )
+            },
+            selected = selectedItem.value == 0,
+            onClick = {
+                selectedItem.value = 0
+                onHomeClick()
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                unselectedIconColor = Color.Gray
             )
+        )
 
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        imageVector = Icons.Filled.Home,
-                        contentDescription = "Home",
-                        tint = if (selectedItem.value == 1) Color.White else Color.Gray
-                    )
-                },
-                label = {
-                    Text(
-                        text = "Home",
-                        fontSize = 12.sp,
-                        color = if (selectedItem.value == 1) Color.White else Color.Gray
-                    )
-                },
-                selected = selectedItem.value == 1,
-                onClick = {
-                    selectedItem.value = 1
-                    onHomeClick()
-                },
-                alwaysShowLabel = true,
-                modifier = if (selectedItem.value == 1) Modifier
-                    .background(brush = gradientBrush, shape = RoundedCornerShape(50))
-                    .padding(8.dp) else Modifier
+        NavigationBarItem(
+            icon = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_voice),
+                    contentDescription = "Voice",
+                    modifier = Modifier
+                        .size(iconSize)
+                        .background(itemBackgroundColor(1), CircleShape)
+                        .padding(6.dp)
+                )
+            },
+            selected = selectedItem.value == 1,
+            onClick = {
+                selectedItem.value = 1
+                onVoiceClick()
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                unselectedIconColor = Color.Gray
             )
+        )
 
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        imageVector = Icons.Filled.Settings,
-                        contentDescription = "Settings",
-                        tint = if (selectedItem.value == 2) Color.White else Color.Gray
-                    )
-                },
-                label = {
-                    Text(
-                        text = "Settings",
-                        fontSize = 12.sp,
-                        color = if (selectedItem.value == 2) Color.White else Color.Gray
-                    )
-                },
-                selected = selectedItem.value == 2,
-                onClick = {
-                    selectedItem.value = 2
-                    onSettingsClick()
-                },
-                alwaysShowLabel = true,
-                modifier = if (selectedItem.value == 2) Modifier
-                    .background(brush = gradientBrush, shape = RoundedCornerShape(50))
-                    .padding(8.dp) else Modifier
+        NavigationBarItem(
+            icon = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_shoping),
+                    contentDescription = "Shopping",
+                    modifier = Modifier
+                        .size(iconSize)
+                        .background(itemBackgroundColor(2), CircleShape)
+                        .padding(6.dp)
+                )
+            },
+            selected = selectedItem.value == 2,
+            onClick = {
+                selectedItem.value = 2
+                onShoppingClick()
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                unselectedIconColor = Color.Gray
             )
-        }
+        )
+
+        NavigationBarItem(
+            icon = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_troubleshooting),
+                    contentDescription = "Troubleshooting",
+                    modifier = Modifier
+                        .size(iconSize)
+                        .background(itemBackgroundColor(3), CircleShape)
+                        .padding(6.dp)
+                )
+            },
+            selected = selectedItem.value == 3,
+            onClick = {
+                selectedItem.value = 3
+                onTroubleshootingClick()
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                unselectedIconColor = Color.Gray
+            )
+        )
+
+        NavigationBarItem(
+            icon = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_profile),
+                    contentDescription = "Profile",
+                    modifier = Modifier
+                        .size(iconSize)
+                        .background(itemBackgroundColor(4), CircleShape)
+                        .padding(6.dp)
+                )
+            },
+            selected = selectedItem.value == 4,
+            onClick = {
+                selectedItem.value = 4
+                onProfileClick()
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                unselectedIconColor = Color.Gray
+            )
+        )
     }
 }
 
-@Preview(showBackground = false)
-@Composable
-fun PreviewSmartHubNavigationBar() {
-    SmartHubNavigationBar(
-        onHomeClick = {},
-        onDevicesClick = {},
-        onSettingsClick = {}
-    )
-}

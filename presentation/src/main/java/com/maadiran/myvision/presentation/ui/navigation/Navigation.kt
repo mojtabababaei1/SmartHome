@@ -24,8 +24,9 @@ import com.maadiran.myvision.presentation.features.devices.tv.ui.screens.voice.G
 import com.maadiran.myvision.presentation.features.devices.tv.viewmodels.MainViewModel
 import com.maadiran.myvision.presentation.features.devices.washingmachine.ui.screens.WashingMachineScreen
 import com.maadiran.myvision.presentation.features.fridge.FridgeNavGraph
-import com.maadiran.myvision.presentation.features.main.MainScreen
+import com.maadiran.myvision.presentation.features.fridge.SettingsScreen
 import com.maadiran.myvision.presentation.features.main.SmartHubScreen
+import com.maadiran.myvision.presentation.features.settings.MyVisionSettingsScreen
 import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -48,15 +49,15 @@ fun AppNavigation(
 
     NavHost(navController, startDestination = "main") {
         composable("main") {
-            MainScreen(
+            SmartHubScreen(
                 navController = navController,
-                onTVClick = { /* ... */ },
-                themeViewModel = themeViewModel // ✅ این خط باید اضافه بشه
+                mainViewModel = mainViewModel
             )
         }
         // مسیر مخصوص یخچال با ناوبری داخلی خودش
         composable("fridgeModule") {
-            FridgeNavGraph(navController = navController)
+            FridgeNavGraph(navController = navController,
+                themeViewModel = themeViewModel    )
         }
 
         composable("devices") {
@@ -67,9 +68,12 @@ fun AppNavigation(
         }
 
         composable("settings") {
-            SmartHubScreen(
+            SettingsScreen(navController = navController) 
+        }
+        composable("settingsTheme") {
+            MyVisionSettingsScreen(
                 navController = navController,
-                mainViewModel = mainViewModel
+                themeViewModel = themeViewModel
             )
         }
 

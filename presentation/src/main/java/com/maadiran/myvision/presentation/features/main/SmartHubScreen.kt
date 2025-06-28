@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.maadiran.myvision.presentation.features.devices.tv.viewmodels.MainViewModel
 import com.maadiran.myvision.presentation.features.settings.MyVisionSettingsScreen
+import com.maadiran.myvision.presentation.ui.navigation.PlaceholderScreen
 import com.maadiran.myvision.presentation.ui.navigation.SmartHubNavigationBar
 import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 
@@ -15,32 +16,38 @@ import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 fun SmartHubScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    val themeViewModel: ThemeViewModel = hiltViewModel() // اضافه کن
+    val themeViewModel: ThemeViewModel = hiltViewModel()
 
-    var currentSection by remember { mutableStateOf("home") }
     val isPaired by mainViewModel.isPaired.collectAsState()
+    val selectedItem = remember { mutableStateOf(0) }
 
     Scaffold(
         bottomBar = {
             SmartHubNavigationBar(
+                selectedItem = selectedItem,
                 onHomeClick = {
-                    currentSection = "home"
+                    selectedItem.value = 0
                 },
-                onDevicesClick = {
-                    currentSection = "devices"
+                onVoiceClick = {
+                    selectedItem.value = 1
                 },
-                onSettingsClick = {
-                    currentSection = "settings"
+                onShoppingClick = {
+                    selectedItem.value = 2
+                },
+                onTroubleshootingClick = {
+                    selectedItem.value = 3
+                },
+                onProfileClick = {
+                    selectedItem.value = 4
                 }
-
             )
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            when (currentSection) {
-                "home" -> MainScreen(
+            when (selectedItem.value) {
+                0 -> MainScreen(
                     navController = navController,
                     onTVClick = {
                         if (isPaired) {
@@ -50,19 +57,14 @@ fun SmartHubScreen(
                         }
                     },
                     modifier = modifier,
-                    themeViewModel = themeViewModel // این رو اضافه کن
+                    themeViewModel = themeViewModel
                 )
-                "devices" -> DevicesScreen(
+                1 -> PlaceholderScreen("Voice")
+                2 -> PlaceholderScreen("Shopping")
+                3 -> PlaceholderScreen("Troubleshooting")
+                4 -> MyVisionSettingsScreen(
                     navController = navController,
-                    modifier = modifier
-                )
-//                "settings" -> SettingsScreen(
-//                    navController = navController,
-//                    modifier = modifier
-//                )
-                "settings" -> MyVisionSettingsScreen(
-                    navController = navController,
-                    themeViewModel = themeViewModel // اطمینان حاصل کن این پارامتر اضافه شده
+                    themeViewModel = themeViewModel
                 )
 
             }
@@ -70,32 +72,4 @@ fun SmartHubScreen(
     }
 }
 
-@Composable
-fun DevicesScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier
-) {
-    // Implement your devices screen here
-    Column(modifier = modifier.fillMaxSize()) {
-        Text(
-            text = "Devices",
-            style = MaterialTheme.typography.headlineLarge
-        )
-        // Add your devices list or grid here
-    }
-}
 
-//@Composable
-//fun SettingsScreen(
-//    navController: NavController,
-//    modifier: Modifier = Modifier
-//) {
-//    // Implement your settings screen here
-//    Column(modifier = modifier.fillMaxSize()) {
-//        Text(
-//            text = "Settings",
-//            style = MaterialTheme.typography.headlineLarge
-//        )
-//        // Add your settings options here
-//    }
-//}

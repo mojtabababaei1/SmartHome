@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -37,36 +39,40 @@ import androidx.navigation.NavController
 import com.maadiran.myvision.models.AppThemeType
 import com.maadiran.myvision.presentation.R
 import com.maadiran.myvision.presentation.ui.getAirCImageRes
+import com.maadiran.myvision.presentation.ui.getBackgroundImageRes
 import com.maadiran.myvision.presentation.ui.getRefrigeImageRes
 import com.maadiran.myvision.presentation.ui.getTVImageRes
 import com.maadiran.myvision.presentation.ui.getWasherImageRes
+
 import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 
 
-// Extension of MainScreen to handle TV integration
 
-// Then update the MainScreen composable
 @Composable
 fun MainScreen(
     navController: NavController,
     onTVClick: () -> Unit,
+  //  fridgeModule: () -> Unit,
     modifier: Modifier = Modifier,
     themeViewModel: ThemeViewModel,
-    viewModel: MainScreenViewModel = hiltViewModel()
+    viewModel: MainScreenViewModel = hiltViewModel(),
+
 ) {
-
-    val currentTheme by themeViewModel.currentTheme.collectAsState()
-
-
-
-
     // تصویر پس‌زمینه
-    Image(
-        painter = painterResource(id = R.drawable.fridge_background),
-        contentDescription = "Background",
-        modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
-    )
+    val currentTheme by themeViewModel.currentTheme.collectAsState()
+    val backgroundImageRes = getBackgroundImageRes(currentTheme)
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Image(
+            painter = painterResource(id = backgroundImageRes),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop // تصویر کل صفحه رو بگیره
+        )
+        }
+
 
     // آیکن‌های بالا (تنظیمات و خروج)
     Row(
@@ -76,6 +82,16 @@ fun MainScreen(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_settings),
+            contentDescription = "Settings",
+            modifier = Modifier
+                .size(32.dp)
+                .clickable {
+                    navController.navigate("settingsTheme")
+
+                }
+        )
         // آیکن خروج
         Image(
             painter = painterResource(id = R.drawable.ic_logout),
@@ -86,20 +102,7 @@ fun MainScreen(
                     // TODO: Action for logout
                 }
         )
-
-        // آیکن تنظیمات
-        Image(
-            painter = painterResource(id = R.drawable.ic_settings),
-            contentDescription = "Settings",
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .size(32.dp)
-                .clickable {
-                    navController.navigate("settings")
-                    Log.d("FridgeScreen", "Settings icon clicked")
-                }
-        )
-    }
+      }
 
     val deviceStatuses by viewModel.deviceStatuses.collectAsState()
 
@@ -117,7 +120,8 @@ fun MainScreen(
                 title = "Smart TV",
                 image = painterResource(id = getTVImageRes(currentTheme)),
                 onClick = onTVClick,
-                connectionStatus = DeviceStatus.Disconnected
+                connectionStatus = DeviceStatus.Disconnected,
+                appTheme = currentTheme
             )
         }
 
@@ -127,7 +131,8 @@ fun MainScreen(
                 title = "Smart Air Conditioner",
                 image = painterResource(id = getAirCImageRes(currentTheme)),
                 onClick = onTVClick,
-                connectionStatus = DeviceStatus.Disconnected
+                connectionStatus = DeviceStatus.Disconnected,
+                appTheme = currentTheme
             )
         }
 
@@ -146,7 +151,8 @@ fun MainScreen(
                 title = "Washing Machine",
                 image = painterResource(id = getWasherImageRes(currentTheme)),
                 onClick = onTVClick,
-                connectionStatus = DeviceStatus.Disconnected
+                connectionStatus = DeviceStatus.Disconnected,
+                appTheme = currentTheme
             )
         }
 
@@ -155,9 +161,14 @@ fun MainScreen(
             DeviceCard(
                 title = "Smart Refrigerator",
                 image = painterResource(id = getRefrigeImageRes(currentTheme)),
-                onClick = onTVClick,
-                connectionStatus = DeviceStatus.Disconnected
+                onClick = {
+                    navController.navigate("fridgeModule")
+                },
+                connectionStatus = DeviceStatus.Connected,
+                appTheme = currentTheme
             )
+            Log.d("TEST", "status = ${DeviceStatus.Connected}")
+
         }
     }
 
@@ -190,16 +201,16 @@ fun DeviceCard(
     title: String,
     image: Painter,
     onClick: () -> Unit,
-    connectionStatus: DeviceStatus
+    connectionStatus: DeviceStatus,
+    appTheme: AppThemeType
 ) {
-
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .aspectRatio(1f)
             .clickable { onClick() }
-            .padding(8.dp), // اختیاری برای فاصله داخلی
+            .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -210,11 +221,27 @@ fun DeviceCard(
                 .size(80.dp)
                 .clip(RoundedCornerShape(12.dp))
         )
-        Text(text = title, style = MaterialTheme.typography.bodyLarge)
+
         Text(
-            text = connectionStatus.name,
-            style = MaterialTheme.typography.bodySmall
+            text = title,
+            style = MaterialTheme.typography.bodyLarge,
+            color = if (appTheme == AppThemeType.Fantasy) Color.Black else Color.White
+        )
+
+
+
+        val statusIcon = when (connectionStatus) {
+            DeviceStatus.Connected -> painterResource(id = R.drawable.ic_connected)
+            DeviceStatus.Disconnected -> painterResource(id = R.drawable.ic_disconnected)
+            DeviceStatus.Pairing -> painterResource(id = R.drawable.ic_pairing)
+        }
+
+        Image(
+            painter = statusIcon,
+            contentDescription = connectionStatus.name,
+            modifier = Modifier.size(24.dp) // آیکون کوچک
         )
     }
 }
+
 

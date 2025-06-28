@@ -43,7 +43,7 @@ fun ServerStatusScreen(navController: NavController) {
             coroutineScope.launch {
                 try {
                     val response = withContext(Dispatchers.IO) {
-                        URL("http://78.39.129.10/api/monitoringtest/48:e7:29:78:c6:c5")
+                        URL("http://78.39.129.10/api/monitoringtest/48:E7:29:78:C6:C5")
                             .openConnection().run {
                                 connectTimeout = 3000
                                 readTimeout = 3000

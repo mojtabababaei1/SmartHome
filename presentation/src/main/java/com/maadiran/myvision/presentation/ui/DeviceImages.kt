@@ -31,5 +31,11 @@ fun getAirCImageRes(theme: AppThemeType): Int {
         AppThemeType.Real -> R.drawable.smart_airconditioner_real
     }
 }
+fun getBackgroundImageRes(theme: AppThemeType): Int {
+    return when(theme) {
+        AppThemeType.Fantasy -> R.drawable.background_fantasy
+        AppThemeType.Real -> R.drawable.background_real
+    }
+}
 
 

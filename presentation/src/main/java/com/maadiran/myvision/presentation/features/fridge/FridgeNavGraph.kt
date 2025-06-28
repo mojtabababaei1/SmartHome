@@ -16,13 +16,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.maadiran.myvision.presentation.ui.theme.ThemeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.InetSocketAddress
 import java.net.Socket
 
 @Composable
-fun FridgeNavGraph(navController: NavHostController) {
+fun FridgeNavGraph(navController: NavHostController,
+                   themeViewModel: ThemeViewModel) {
     val fridgeNavController = rememberNavController()
     var startDestination by remember { mutableStateOf<String?>(null) }
 
@@ -31,7 +33,7 @@ fun FridgeNavGraph(navController: NavHostController) {
         val connected = withContext(Dispatchers.IO) {
             try {
                 val socket = Socket()
-                socket.connect(InetSocketAddress("refrigmb.local", 80), 2000)
+                socket.connect(InetSocketAddress("refrigerator.local", 80), 2000)
                 socket.close()
                 true
             } catch (e: Exception) {
@@ -48,10 +50,12 @@ fun FridgeNavGraph(navController: NavHostController) {
             startDestination = startDestination!!
         ) {
             composable("WifiForm") {
-                WifiForm(navController = fridgeNavController)
+                WifiForm(navController = fridgeNavController,
+                    themeViewModel = themeViewModel)
            }
             composable("fridge") {
-                FridgeScreen(navController = fridgeNavController)
+                FridgeScreen(navController = fridgeNavController,
+                    themeViewModel = themeViewModel)
             }
             composable("status") {
                 Text("یخچال با موفقیت متصل شد!")

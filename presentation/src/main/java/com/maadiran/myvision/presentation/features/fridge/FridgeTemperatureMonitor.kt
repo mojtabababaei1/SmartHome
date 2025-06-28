@@ -1,6 +1,6 @@
 package com.maadiran.myvision.presentation.features.fridge
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +31,7 @@ fun FridgeTemperatureMonitor() {
         while (true) {
             try {
                 withContext(Dispatchers.IO) {
-                    val tempsJson = URL("http://refrigmb.local/api/MonitorTemps")
+                    val tempsJson = URL("http://refrigerator.local/api/MonitorTemps")
                         .openConnection().run {
                             connectTimeout = 3000
                             readTimeout = 3000
@@ -67,7 +67,11 @@ fun FridgeTemperatureMonitor() {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+
+
+            .offset(y =180.dp)
+            .offset(x =0.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CombinedTemperatureChart(

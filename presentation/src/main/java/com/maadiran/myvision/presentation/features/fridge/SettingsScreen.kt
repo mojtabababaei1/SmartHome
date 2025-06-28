@@ -55,7 +55,7 @@ suspend fun checkFridgeConnection(): Boolean {
     return withContext(Dispatchers.IO) {
         try {
             val socket = Socket()
-            socket.connect(InetSocketAddress("refrigmb.local", 80), 2000)
+            socket.connect(InetSocketAddress("refrigerator.local", 80), 2000)
             socket.close()
             true
         } catch (e: Exception) {
